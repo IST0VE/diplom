@@ -1,24 +1,53 @@
-@startuml bd
+@startuml db
 
 !define TABLE(x) class x << (T,orchid) >>
 !define PRIMARY_KEY(x) <u>x</u>
 !define FOREIGN_KEY(x) #x
 
+TABLE(Сотрудники) {
+  PRIMARY_KEY(ID)
+  Фамилия : varchar
+  Имя : varchar
+  Отчество : varchar
+  Дата_рождения : date
+  Паспортные_данные : varchar
+  Номер_трудовой_книжки : varchar
+  Должность_ID : int
+  Роль_ID : int
+}
+
+TABLE(Должности) {
+  PRIMARY_KEY(ID)
+  Название : varchar
+}
+
+TABLE(Роли) {
+  PRIMARY_KEY(ID)
+  Название : varchar
+}
+
 TABLE(Проекты) {
   PRIMARY_KEY(ID)
   Название : varchar
   Описание : text
-  Статус : varchar
+  Статус_ID : int
   Дата_начала : date
   Дата_окончания : date
   Бюджет : decimal
   Клиент_ID : int
+  Контрагент_ID : int
+}
+
+TABLE(Статусы_Проектов) {
+  PRIMARY_KEY(ID)
+  Статус : varchar
 }
 
 TABLE(Документы) {
   PRIMARY_KEY(ID)
   Название : varchar
   Тип : varchar
+  Ссылка : varchar
   Дата : date
   Проект_ID : int
 }
@@ -26,7 +55,7 @@ TABLE(Документы) {
 TABLE(Клиенты) {
   PRIMARY_KEY(ID)
   Название : varchar
-  Адрес : varchar
+  Юр_адрес : varchar
   Телефон : varchar
   Email : varchar
 }
@@ -37,20 +66,6 @@ TABLE(Контрагенты) {
   Юр_адрес : varchar
   Телефон : varchar
   Email : varchar
-}
-
-TABLE(Сотрудники) {
-  PRIMARY_KEY(ID)
-  Имя : varchar
-  Должность : varchar
-  Email : varchar
-  Телефон : varchar
-  Роль_ID : int
-}
-
-TABLE(Роли) {
-  PRIMARY_KEY(ID)
-  Название : varchar
 }
 
 TABLE(Склад) {
@@ -68,18 +83,14 @@ TABLE(Финансы) {
   Проект_ID : int
 }
 
-TABLE(Уведомления) {
-  PRIMARY_KEY(ID)
-  Сообщение : text
-  Дата : datetime
-  Сотрудник_ID : int
-}
-
+Сотрудники "n" -- "1" Должности : имеет >
+Сотрудники "n" -- "1" Роли : имеет >
+Сотрудники "n" -- "n" Проекты : работает над >
 Проекты "1" -- "n" Документы : содержит >
+Проекты "1" -- "1" Статусы_Проектов : имеет >
 Проекты "1" -- "n" Склад : использует >
 Проекты "1" -- "n" Финансы : влияет на >
 Проекты "0..1" -- "1" Клиенты : заказан >
-Сотрудники "n" -- "1" Роли : имеет >
-Сотрудники "1" -- "n" Уведомления : получает >
+Проекты "0..1" -- "1" Контрагенты : участвует >
 
 @enduml
