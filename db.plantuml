@@ -1,0 +1,85 @@
+@startuml bd
+
+!define TABLE(x) class x << (T,orchid) >>
+!define PRIMARY_KEY(x) <u>x</u>
+!define FOREIGN_KEY(x) #x
+
+TABLE(Проекты) {
+  PRIMARY_KEY(ID)
+  Название : varchar
+  Описание : text
+  Статус : varchar
+  Дата_начала : date
+  Дата_окончания : date
+  Бюджет : decimal
+  Клиент_ID : int
+}
+
+TABLE(Документы) {
+  PRIMARY_KEY(ID)
+  Название : varchar
+  Тип : varchar
+  Дата : date
+  Проект_ID : int
+}
+
+TABLE(Клиенты) {
+  PRIMARY_KEY(ID)
+  Название : varchar
+  Адрес : varchar
+  Телефон : varchar
+  Email : varchar
+}
+
+TABLE(Контрагенты) {
+  PRIMARY_KEY(ID)
+  Название : varchar
+  Юр_адрес : varchar
+  Телефон : varchar
+  Email : varchar
+}
+
+TABLE(Сотрудники) {
+  PRIMARY_KEY(ID)
+  Имя : varchar
+  Должность : varchar
+  Email : varchar
+  Телефон : varchar
+  Роль_ID : int
+}
+
+TABLE(Роли) {
+  PRIMARY_KEY(ID)
+  Название : varchar
+}
+
+TABLE(Склад) {
+  PRIMARY_KEY(ID)
+  Наименование : varchar
+  Количество : int
+  Проект_ID : int
+}
+
+TABLE(Финансы) {
+  PRIMARY_KEY(ID)
+  Тип_операции : varchar
+  Сумма : decimal
+  Дата : date
+  Проект_ID : int
+}
+
+TABLE(Уведомления) {
+  PRIMARY_KEY(ID)
+  Сообщение : text
+  Дата : datetime
+  Сотрудник_ID : int
+}
+
+Проекты "1" -- "n" Документы : содержит >
+Проекты "1" -- "n" Склад : использует >
+Проекты "1" -- "n" Финансы : влияет на >
+Проекты "0..1" -- "1" Клиенты : заказан >
+Сотрудники "n" -- "1" Роли : имеет >
+Сотрудники "1" -- "n" Уведомления : получает >
+
+@enduml
