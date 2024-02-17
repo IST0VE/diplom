@@ -35,3 +35,14 @@ async def register_user(username: str = Form(...), password: str = Form(...), ro
     query = users.insert().values(username=username, password=password, role=role)
     last_record_id = await database.execute(query)
     return {"id": last_record_id, "username": username, "role": role}
+
+@app.post("/test/v1/auth/")
+async def authenticate_user(username: str = Form(...), password: str = Form(...)):
+    query = users.select().where(users.c.username == username).where(users.c.password == password)
+    user = await database.fetch_one(query)
+    if user:
+        # Извлечение роли пользователя из результата запроса
+        user_role = user["role"]  # Убедитесь, что у вас есть колонка 'role' в таблице 'users'
+        return {"message": "Успешная авторизация", "username": username, "role": user_role}
+    else:
+        raise HTTPException(status_code=400, detail="Неверные учетные данные")
