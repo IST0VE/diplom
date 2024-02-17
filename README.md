@@ -71,4 +71,4 @@
 - **Сотрудник:** Ограниченный доступ в соответствии с назначенными проектами.
   
 ## Диаграмма базы данных
-![Диаграмма базы данных](https://github.com/IST0VE/diplom/blob/main/out/db/bd.png)
+![Диаграмма базы данных](https://github.com/IST0VE/diplom/blob/main/out/db/db.png)
