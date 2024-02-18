@@ -1,0 +1,61 @@
+@startuml db2
+
+!define TABLE(x) class x << (T,orchid) >>
+!define PRIMARY_KEY(x) <u>x</u>
+!define FOREIGN_KEY(x) #x
+
+TABLE(Склад) {
+  PRIMARY_KEY(ID)
+  Наименование : varchar
+  Количество : int
+  Цена_за_единицу : decimal
+}
+
+TABLE(Проекты) {
+  PRIMARY_KEY(ID)
+  Название : varchar
+  Описание : text
+  Статус_ID : int
+  Прогресс : int
+  Дата_начала : date
+  Дата_окончания : date
+  Бюджет : decimal
+}
+
+TABLE(Задачи) {
+  PRIMARY_KEY(ID)
+  Название : varchar
+  Описание : text
+  Статус : varchar
+  Проект_ID : int
+  Сотрудник_ID : int
+  Срок : date
+}
+
+TABLE(Сотрудники) {
+  PRIMARY_KEY(ID)
+  Фамилия : varchar
+  Имя : varchar
+  Отчество : varchar
+  Пользователь_ID : int
+}
+
+TABLE(Роли) {
+  PRIMARY_KEY(ID)
+  Название : varchar
+}
+
+TABLE(Пользователи) {
+  PRIMARY_KEY(ID)
+  Логин : varchar
+  Пароль : varchar
+  Email : varchar
+  Роль_ID : int
+}
+
+Сотрудники "n" -- "1" Пользователи : > имеет_учетную_запись
+Проекты "n" -- "n" Склад : > использует
+Проекты "1" -- "n" Задачи : > включает
+Задачи "n" -- "1" Сотрудники : > выполняется
+
+@enduml

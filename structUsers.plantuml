@@ -1,0 +1,39 @@
+@startuml structUsers
+
+!define TABLE(x) class x << (T,orchid) >>
+!define PRIMARY_KEY(x) <u>x</u>
+!define FOREIGN_KEY(x) #x
+
+TABLE(Пользователи) {
+  PRIMARY_KEY(ID)
+  Логин : varchar
+  Пароль : varchar
+  Email : varchar
+  Роль_ID : int
+}
+
+TABLE(Роли) {
+  PRIMARY_KEY(ID)
+  Название : varchar
+}
+
+TABLE(Права_Доступа) {
+  PRIMARY_KEY(ID)
+  Роль_ID : int
+  Разрешение : varchar
+  Описание : text
+}
+
+TABLE(Сотрудники) {
+  PRIMARY_KEY(ID)
+  Фамилия : varchar
+  Имя : varchar
+  Отчество : varchar
+  Пользователь_ID : int
+}
+
+Пользователи "1" -- "1" Роли : имеет >
+Роли "1" -- "n" Права_Доступа : определяет >
+Пользователи "1" -- "0..1" Сотрудники : соответствует >
+
+@enduml

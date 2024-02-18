@@ -1,0 +1,43 @@
+@startuml stractusers2
+
+!define TABLE(x) class x << (T,orchid) >>
+!define PRIMARY_KEY(x) <u>x</u>
+!define FOREIGN_KEY(x) #x
+
+TABLE(Пользователи) {
+  PRIMARY_KEY(ID)
+  Логин : varchar
+  Пароль : varchar
+  Email : varchar
+  Роль_ID : int
+}
+
+TABLE(Роли) {
+  PRIMARY_KEY(ID)
+  Название : varchar
+}
+
+TABLE(Разрешения) {
+  PRIMARY_KEY(ID)
+  Разрешение : varchar
+  Описание : text
+}
+
+TABLE(Роли_Разрешения) {
+  FOREIGN_KEY(Роль_ID) : int
+  FOREIGN_KEY(Разрешение_ID) : int
+}
+
+TABLE(Сотрудники) {
+  PRIMARY_KEY(ID)
+  Фамилия : varchar
+  Имя : varchar
+  Отчество : varchar
+  Пользователь_ID : int
+}
+
+Пользователи "1" -- "1" Роли : > имеет
+Роли "n" -- "n" Разрешения : > определяются через > Роли_Разрешения
+Сотрудники "1" -- "0..1" Пользователи : > соответствует
+
+@enduml
