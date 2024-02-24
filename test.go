@@ -46,11 +46,23 @@ func initDB() {
 	fmt.Println("Connected to the database!")
 }
 
+func enableCors(w *http.ResponseWriter) {
+    (*w).Header().Set("Access-Control-Allow-Origin", "*") // Это разрешает запросы с любого источника
+    (*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE") // Разрешенные методы запросов
+    (*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+}
+
 func registerHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Only POST method is allowed", http.StatusMethodNotAllowed)
-		return
-	}
+    enableCors(&w)
+    if r.Method == "OPTIONS" {
+        w.WriteHeader(http.StatusOK)
+        return
+    }
+
+    if r.Method != http.MethodPost {
+        http.Error(w, "Only POST method is allowed", http.StatusMethodNotAllowed)
+        return
+    }
 
 	var user User
 	err := json.NewDecoder(r.Body).Decode(&user)
@@ -72,13 +84,21 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
+
+    // Тело функции не изменяется...
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Only POST method is allowed", http.StatusMethodNotAllowed)
-		return
-	}
+    enableCors(&w)
+    if r.Method == "OPTIONS" {
+        w.WriteHeader(http.StatusOK)
+        return
+    }
+
+    if r.Method != http.MethodPost {
+        http.Error(w, "Only POST method is allowed", http.StatusMethodNotAllowed)
+        return
+    }
 
 	var loginUser User
 	err := json.NewDecoder(r.Body).Decode(&loginUser)
@@ -113,17 +133,18 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(role)
+
+    // Тело функции не изменяется...
 }
 
-
 func main() {
-	initDB()
+    initDB()
 
-	http.HandleFunc("/register", registerHandler)
-	http.HandleFunc("/login", loginHandler)
+    http.HandleFunc("/register", registerHandler)
+    http.HandleFunc("/login", loginHandler)
 
-	fmt.Println("Starting server at port 8080...")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatal(err)
-	}
+    fmt.Println("Starting server at port 8080...")
+    if err := http.ListenAndServe(":8080", nil); err != nil {
+        log.Fatal(err)
+    }
 }

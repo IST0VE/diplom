@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация и Авторизация</title>
+</head>
+<body>
+    <h2>Регистрация</h2>
+    <form id="registerForm">
+        <input type="email" id="registerEmail" placeholder="Email" required>
+        <input type="password" id="registerPassword" placeholder="Пароль" required>
+        <select id="registerRole">
+            <option value="1">Пользователь</option>
+            <option value="2">Админ</option>
+        </select>
+        <button type="submit">Регистрация</button>
+    </form>
+
+    <h2>Авторизация</h2>
+    <form id="loginForm">
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Пароль" required>
+        <button type="submit">Вход</button>
+    </form>
+
+    <script src="app.js"></script>
+</body>
+</html>
